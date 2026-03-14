@@ -1,0 +1,79 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: wallet-app
+
+# ====================================
+#      Database Configurations
+# ====================================
+  datasource:
+    url: jdbc:postgresql://localhost:5432/fintech?currentSchema=wallet
+    username: fintech
+    password: fintech
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+
+# ====================================
+#      Flyway Configurations
+# ====================================
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    default-schema: wallet
+    schemas:
+      - wallet
+# ==========================================
+#    Message Queue Configurations (Kafka)
+# ==========================================
+  kafka:
+    bootstrap-servers: localhost:29092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      acks: all
+
+# ====================================
+#      Application Configurations
+# ====================================
+wallet:
+  hashing:
+    algorithm: SHA-256
+    encoding: UTF-8
+  outbox:
+    publisher:
+      batch-size: 100
+      fixed-delay-ms: 5000
+      max-attempts: 5
+      backoff:
+        initial-delay-ms: 2000
+        multiplier: 2.0
+        max-delay-ms: 60000
+  kafka:
+    topics:
+      transfer-completed: fintech.transfer.completed
+      transfer-reversed: fintech.transfer.reversed
+
+# ====================================
+#      Health checks Configurations
+# ====================================
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+
+# ====================================
+#      Logging Configurations
+# ====================================
+logging:
+  pattern:
+    correlation: "[${spring.application.name},%X{traceId:-},%X{spanId:-},%X{correlationId:-}] "
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight(%-5level) ${logging.pattern.correlation}[%15.15thread] %cyan(%-40.40logger{40}) : %msg%n%wEx"
