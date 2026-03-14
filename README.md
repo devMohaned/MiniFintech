@@ -600,6 +600,12 @@ This matters most during balance-changing operations such as debit, transfer, an
 
 ## Testing
 
+<details>
+  <summary>Coverage</summary>
+https://github.com/devMohaned/MiniFintech/blob/master/jacoco.png
+  
+</details>
+
 The repository includes:
 
 - unit tests for services, mappers, and utilities
@@ -617,9 +623,337 @@ Coverage reporting is configured through JaCoCo during Maven packaging.
 
 A Postman collection was provided at:
 
-```text
-c:\Users\mohan\OneDrive\Desktop\Wallet App.postman_collection.json
-```
+<details>
+<summary>Click to expand</summary>
+
+  {
+  "info": {
+    "_postman_id": "e91f2987-a5a4-4b30-811c-e27aabb80dc4",
+    "name": "Wallet App",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "23277089"
+  },
+  "item": [
+    {
+      "name": "Edgy Cases",
+      "item": [
+        {
+          "name": "Duplicated Transfer",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Correlation-Id",
+                "value": "test-transfer-001"
+              },
+              {
+                "key": "Idempotency-Key",
+                "value": "3b4d3c42-66f2-4d50-a431-9a4e1ce9d111"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"sourceWalletId\": \"11111111-1111-1111-1111-111111111111\",\n    \"destinationWalletId\": \"22222222-2222-2222-2222-222222222222\",\n    \"amount\": \"150.0000\",\n    \"currency\": \"EGP\",\n    \"reason\": \"peer_transfer\"\n  }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/v1/transfers",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "transfers"
+              ]
+            },
+            "description": "Generated from cURL: curl -X POST http://localhost:8080/api/v1/transfers \\\n  -H \"Content-Type: application/json\" \\\n  -H \"X-Correlation-Id: test-transfer-001\" \\\n  -H \"Idempotency-Key: 3b4d3c42-66f2-4d50-a431-9a4e1ce9d111\" \\\n  -d '{\n    \"sourceWalletId\": \"11111111-1111-1111-1111-111111111111\",\n    \"destinationWalletId\": \"22222222-2222-2222-2222-222222222222\",\n    \"amount\": \"150.0000\",\n    \"currency\": \"EGP\",\n    \"reason\": \"peer_transfer\"\n  }'"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "POST - Creating a new wallet",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Correlation-Id",
+            "value": "test-corr-001"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"customerId\": \"cust_123\",\n    \"currency\": \"EGP\"\n  }",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/v1/wallets",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "wallets"
+          ]
+        },
+        "description": "Generated from cURL: curl -X POST http://localhost:8080/api/v1/wallets \\\n  -H \"Content-Type: application/json\" \\\n  -H \"X-Correlation-Id: test-corr-001\" \\\n  -d '{\n    \"customerId\": \"cust_123\",\n    \"currency\": \"EGP\"\n  }'"
+      },
+      "response": []
+    },
+    {
+      "name": "Getting a wallet",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/v1/wallets/{walletId}",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "wallets",
+            "{walletId}"
+          ]
+        },
+        "description": "Generated from cURL: curl http://localhost:8080/api/v1/wallets/{walletId}"
+      },
+      "response": []
+    },
+    {
+      "name": "POST - Credit (Adding Balance)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Correlation-Id",
+            "value": "test-credit-001"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"amount\": \"500.0000\",\n    \"currency\": \"EGP\",\n    \"reference\": \"manual_topup_001\",\n    \"description\": \"Initial funding\"\n  }",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/v1/wallets/{walletId}/credit",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "wallets",
+            "{walletId}",
+            "credit"
+          ]
+        },
+        "description": "Generated from cURL: curl -X POST http://localhost:8080/api/v1/wallets/{walletId}/credit \\\n  -H \"Content-Type: application/json\" \\\n  -H \"X-Correlation-Id: test-credit-001\" \\\n  -d '{\n    \"amount\": \"500.0000\",\n    \"currency\": \"EGP\",\n    \"reference\": \"manual_topup_001\",\n    \"description\": \"Initial funding\"\n  }'"
+      },
+      "response": []
+    },
+    {
+      "name": "POST - Debit (Deducting Balance)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Correlation-Id",
+            "value": "test-debit-001"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"amount\": \"200.0000\",\n    \"currency\": \"EGP\",\n    \"reference\": \"cash_out_001\",\n    \"description\": \"ATM withdrawal simulation\"\n  }",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/v1/wallets/{walletId}/debit",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "wallets",
+            "{walletId}",
+            "debit"
+          ]
+        },
+        "description": "Generated from cURL: curl -X POST http://localhost:8080/api/v1/wallets/{walletId}/debit \\\n  -H \"Content-Type: application/json\" \\\n  -H \"X-Correlation-Id: test-debit-001\" \\\n  -d '{\n    \"amount\": \"200.0000\",\n    \"currency\": \"EGP\",\n    \"reference\": \"cash_out_001\",\n    \"description\": \"ATM withdrawal simulation\"\n  }'"
+      },
+      "response": []
+    },
+    {
+      "name": "Getting Ledger for wallet",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-Correlation-Id",
+            "value": "test-ledger-001"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8080/api/v1/wallets/{walletId}/ledger?page=0&size=20",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "wallets",
+            "{walletId}",
+            "ledger"
+          ],
+          "query": [
+            {
+              "key": "page",
+              "value": "0"
+            },
+            {
+              "key": "size",
+              "value": "20"
+            }
+          ]
+        },
+        "description": "Generated from cURL: curl \"http://localhost:8080/api/v1/wallets/{walletId}/ledger?page=0&size=20\" \\\n  -H \"X-Correlation-Id: test-ledger-001\""
+      },
+      "response": []
+    },
+    {
+      "name": "POST - Transfer From Wallet A to Wallet B",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Correlation-Id",
+            "value": "test-transfer-001"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"sourceWalletId\": \"11111111-1111-1111-1111-111111111111\",\n    \"destinationWalletId\": \"22222222-2222-2222-2222-222222222222\",\n    \"amount\": \"150.0000\",\n    \"currency\": \"EGP\",\n    \"reason\": \"peer_transfer\"\n  }",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/v1/transfers",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "transfers"
+          ]
+        },
+        "description": "Generated from cURL: curl -X POST http://localhost:8080/api/v1/transfers \\\n  -H \"Content-Type: application/json\" \\\n  -H \"X-Correlation-Id: test-transfer-001\" \\\n  -d '{\n    \"sourceWalletId\": \"11111111-1111-1111-1111-111111111111\",\n    \"destinationWalletId\": \"22222222-2222-2222-2222-222222222222\",\n    \"amount\": \"150.0000\",\n    \"currency\": \"EGP\",\n    \"reason\": \"peer_transfer\"\n  }'"
+      },
+      "response": []
+    },
+    {
+      "name": "POST - Reversing a transfer",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Correlation-Id",
+            "value": "test-reversal-001"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"reason\": \"customer_dispute\"\n  }",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/v1/transfers/{transferId}/reversal",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "transfers",
+            "{transferId}",
+            "reversal"
+          ]
+        },
+        "description": "Generated from cURL: curl -X POST http://localhost:8080/api/v1/transfers/{transferId}/reversal \\\n  -H \"Content-Type: application/json\" \\\n  -H \"X-Correlation-Id: test-reversal-001\" \\\n  -d '{\n    \"reason\": \"customer_dispute\"\n  }'"
+      },
+      "response": []
+    }
+  ]
+}
+</details>
 
 The collection covers:
 
